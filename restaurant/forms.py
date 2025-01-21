@@ -3,7 +3,6 @@ from django.utils import timezone
 from datetime import timedelta, datetime
 from .models import Booking
 
-
 class StyleFormMixin:
     """
     Добавляет стилевые атрибуты к полям формы - стилизация формы.
@@ -129,7 +128,6 @@ class BookingUpdateForm(StyleFormMixin, forms.ModelForm):
         Возвращает список занятых времен для указанного стола и даты.
         НЕОБХОДИМО РЕАЛИЗОВАТЬ ЗАПРОС К БАЗЕ ДАННЫХ.
         """
-        from .models import Booking  # Импортируйте вашу модель Booking
 
         booked_slots = Booking.objects.filter(
             table=table, date_reserved=date
