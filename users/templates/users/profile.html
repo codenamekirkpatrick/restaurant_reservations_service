@@ -1,0 +1,138 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center"
+     style="min-height: 70vh; padding: 40px 0;">
+    <div class="row gutters-sm w-100" style="max-width: 1200px;">
+        <!-- Левая большая колонка с аватаром и кнопкой -->
+        <div class="col-md-4 mb-3 d-flex align-items-stretch">
+            <div class="card bg-dark text-white w-100">
+                <div class="card-body text-center my-4">
+                    <img src="/media/{{ user.avatar }}" alt="User Avatar"
+                         class="rounded-circle mb-3" width="150" height="150">
+
+                    <h4 class="my-4">{{ user.first_name }}</h4>
+                    <a href="{% url 'users:update' user.pk %}"
+                       class="btn btn-outline-warning btn-sm mt-2">Редактировать</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая колонка с информацией -->
+        <div class="col-md-8">
+            <!-- Карточка с основной информацией (высота выравнивается по высоте левой колонки) -->
+            <div class="card mb-3 bg-dark text-white d-flex align-items-stretch">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Ф. И. О.</h6>
+                        </div>
+                        <div class="col-sm-9" style="color: #ccc">
+                            {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Email</h6>
+                        </div>
+                        <div class="col-sm-9" style="color: #ccc">
+                            {{ user.email }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Телефон</h6>
+                        </div>
+                        <div class="col-sm-9" style="color: #ccc">
+                            {% if not user.phone or user.phone == '+7' %}
+                            Не указан
+                            {% else %}
+                            {{ user.phone }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Страна</h6>
+                        </div>
+                        <div class="col-sm-9" style="color: #ccc">
+                            {{ user.country.name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Дополнительные карточки (две маленькие) -->
+            <div class="row gutters-sm">
+                <!-- О себе -->
+                <div class="col-sm-6 mb-3 d-flex align-items-stretch">
+                    <div class="card bg-dark text-white w-100">
+                        <div class="card-body">
+                            <h6 class="mb-3">О себе</h6>
+                            <p style="color: #ccc">
+                                {% if not user.about_me %}
+                                Нет описания
+                                {% else %}
+                                {{ user.about_me }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Заметки -->
+                <div class="col-sm-6 mb-3 d-flex align-items-stretch">
+                    <div class="card bg-dark text-white w-100">
+                        <div class="card-body d-block p-auto">
+                            <h6 class="mb-3">Заметки</h6>
+                            <div class="d-flex justify-content-around align-items-stretch">
+                                <div id="note-container"
+                                     style="color: black; background-color: #fff; width: 75%; border-radius: 5px; padding: 10px; min-height: 20px;">
+                                    {{ note_text|default:"" }}
+                                </div>
+                                <button type="button" id="edit-button" class="btn btn-warning">
+                                    <img id="edit-icon" src="{% static 'img/edit_icon.png' %}" alt="edit"
+                                         style="max-width: 16px; max-height:16px;">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form id="note-form" action="{% url 'users:profile' user.pk %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                    <textarea id="note-textarea" name="note-text" style="display: none; "></textarea>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editButton = document.getElementById('edit-button');
+        const noteContainer = document.getElementById('note-container');
+        const editIcon = document.getElementById('edit-icon');
+
+        let isEditMode = false;
+
+        editButton.addEventListener('click', function() {
+            if (isEditMode) {
+                // Сохранение заметки
+                noteContainer.innerHTML = noteContainer.querySelector('textarea').value;
+                noteContainer.style.backgroundColor = '#fff';
+                noteContainer.style.padding = '10px';
+                noteContainer.style.borderRadius = '5px';
+                editIcon.src = "{% static 'img/edit_icon.png' %}";
+                isEditMode = false;
+            } else {
+                // Переключение в режим редактирования
+                noteContainer.innerHTML = `<textarea rows="5" style="width: 100%; height: 100%; border: none; background-color: #fff; color: black; border-radius: 5px;">${noteContainer.innerHTML}</textarea>`;
+                editIcon.src = "{% static 'img/save_icon.png' %}";
+                isEditMode = true;
+            }
+        });
+    });
+</script>
+{% endblock %}

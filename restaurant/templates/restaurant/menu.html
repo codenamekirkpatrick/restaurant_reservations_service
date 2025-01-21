@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% extends 'restaurant/base.html'  %}
+{% load static %}
+{% block content %}
+<!-- Menu Section -->
+<section id="menu" class="menu section" style="min-height: 100vh; padding: 20px 0; margin-top: 120px;">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Меню</h2>
+        <p>Меню от шеф-повара</p>
+    </div><!-- End Section Title -->
+
+    <div class="container isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+        <div class="row" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-lg-12 d-flex justify-content-center">
+                <ul class="menu-filters isotope-filters">
+                    <li data-filter="*" class="filter-active">Все блюда</li>
+                    <li data-filter=".filter-starters">Закуски</li>
+                    <li data-filter=".filter-salads">Салаты</li>
+                    <li data-filter=".filter-specialty">Фирменные блюда</li>
+                </ul>
+            </div>
+        </div><!-- Menu Filters -->
+
+        <div class="row isotope-container" data-aos="fade-up" data-aos-delay="200">
+            <!-- Menu Item -->
+            <div class="col-lg-6 menu-item isotope-item filter-specialty">
+                <img src="{% static 'img/menu/stake.jpg' %}" class="menu-img" alt="">
+                <div class="menu-content">
+                    <a href="#">Стейк</a><span>1200 р.</span>
+                </div>
+                <div class="menu-ingredients">
+                    Стейк рибай
+                </div>
+            </div><!-- Menu Item -->
+
+        </div><!-- Menu Container -->
+
+    </div>
+
+</section>
+<!-- /Menu Section -->
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded text-white"
+     style="min-height: 100vh; padding: 20px 0; margin-top: 120px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 px-0 text-center">
+            <h3>Ваше сообщение отправлено</h3><br>
+            <p>Вам ответят в течение суток часов на указанный email</p>
+            <br>
+            <a href="{% url 'restaurant:index' %}" class="btn btn-warning btn-sm mt-3" style="text-decoration: none;">
+                Вернуться на главную страницу
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

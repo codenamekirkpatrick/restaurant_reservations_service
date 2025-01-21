@@ -1,0 +1,67 @@
+{% extends 'restaurant/base.html'  %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+
+<!-- Book A Table Section -->
+<section id="book-a-table" class="book-a-table section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Подтверждение бронирования</h2>
+    </div><!-- End Section Title -->
+    <!-- templates/restaurant/booking_form.html -->
+    <!-- booking_form.html -->
+
+    <div class="container d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+        <div class="row">
+            <div class="col-lg-12">
+                <style>
+                    span {
+                        font-size: 20px;
+                        font-family: 'Playfair Display';
+                        color: #fff;
+                    }
+                    strong {
+                        color: goldenrod;
+                    }
+                </style>
+                {% if is_edit %}
+                <span><strong>Номер стола: </strong>{{ table.number }}</span><br>
+                <span><strong>Количество мест: </strong>{{ table.seats }}</span><br>
+                <span><strong>Дата: </strong>{{ date }}</span><br>
+                {% else %}
+                <span><strong>Номер стола: </strong>{{ table.number }}</span><br>
+                <span><strong>Количество мест: </strong>{{ table.seats }}</span><br>
+                <span><strong>Дата: </strong>{{ date_reserved|formatting_date }}</span><br>
+                <span><strong>Время: </strong>{{ time_reserved|formatting_time }}</span><br>
+                {% endif %}
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    <div class="text-center my-4">
+                        <button type="submit" class="btn btn-warning">
+                            {% if not is_edit %}
+                            Подтвердить бронирование
+                            {% else %}
+                            Сохранить изменения
+                            {% endif %}
+                        </button>
+                        <a href="{% url 'restaurant:booking_list' %}">
+                            <button type="button" class="btn btn-warning mx-2">
+                                Отмена
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section><!-- /Book A Table Section -->
+{% endblock %}

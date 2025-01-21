@@ -1,0 +1,119 @@
+{% extends 'restaurant/base.html'  %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+
+<!-- Book A Table Section -->
+<section id="book-a-table" class="book-a-table section" style="min-height: 100vh; padding: 20px 0; margin-top: 120px;">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>История</h2>
+        <p>Бронирования</p>
+    </div><!-- End Section Title -->
+
+    <div class="row">
+
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-6" style="margin-left: 100px !important; margin-top: 10px;">
+            <style>
+                .horizontal-buttons {
+                    display: flex; /* Или display: inline-block; для простого варианта */
+                    align-items: center;
+                    justify-content: center;
+                }
+            </style>
+            <!-- Текущие бронирования -->
+            <div class="my-2" style="height: 30vh;">
+                <h2>Активные бронирования</h2>
+                <div class="table-responsive small">
+                    {% if bookings %}
+                    <table class="table table-dark table-hover table-bordered table-sm">
+                        <thead>
+                        <tr class="item" style="text-align: center !important; line-height: 24px;">
+                            <th style="width: 20px;" scope="col">#</th>
+                            <th style="width: 70px;" scope="col">Номер стола</th>
+                            <th style="width: 120px;" scope="col">Количество мест</th>
+                            <th style="width: 120px;" scope="col">Дата бронирования</th>
+                            <th style="width: 120px;" scope="col">Время бронирования</th>
+                            <th style="width: 120px;" scope="col">Настройки</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div style="max-height: 30vh; overflow-y: auto;">
+                        <table class="table table-dark table-hover table-bordered table-sm">
+                            <tbody>
+                            {% for booking in bookings %}
+                            <tr class="item"
+                                style="text-align: center !important; line-height: 24px; vertical-align: middle;">
+                                <td style="width: 20px;" >{{ forloop.counter }}</td>
+                                <td style="width: 95px;" >{{ booking.table.number }}</td>
+                                <td style="width: 150px;" >{{ booking.table.seats }}</td>
+                                <td style="width: 160px;" >{{ booking.date_reserved }}</td>
+                                <td style="width: 150px;" >{{ booking.time_reserved }}</td>
+                                <td style="width: 120px;" >
+                                    <div class="horizontal-buttons">
+                                        <form action="{% url 'restaurant:booking_list' %}" method="post"
+                                              onsubmit="return confirm('Вы уверены, что хотите отменить бронирование?')">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="booking_id" value="{{ booking.pk }}">
+                                            <button type="submit" class="btn btn-sm btn-light">Отменить</button>
+                                        </form>
+                                        <a href="{% url 'restaurant:booking_update' booking.pk %}" class="mx-3">
+                                            <button class="btn btn-sm btn-light"><img
+                                                    src="{% static 'img/edit_icon.png' %}"
+                                                    alt="edit" style="max-width: 16px; max-height:16px;">
+                                            </button>
+                                        </a>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% else %}
+                <p class="m-3" style="color: #ccc">
+                    Нет бронирований
+                </p>
+                {% endif %}
+            </div>
+        </div>
+        <!-- История бронирований-->
+        <div class="mt-5">
+            <h2>История бронирований</h2>
+            <table class="table table-dark table-hover table-bordered table-sm">
+                <thead>
+                <tr class="item" style="text-align: center !important; line-height: 24px;">
+                    <th style="width: 120px;" scope="col">Номер стола</th>
+                    <th style="width: 120px;" scope="col">Количество мест</th>
+                    <th style="width: 120px;" scope="col">Дата бронирования</th>
+                    <th style="width: 120px;" scope="col">Время бронирования</th>
+                    <th style="width: 120px;" scope="col">Дата и время отмены</th>
+                </tr>
+                </thead>
+            </table>
+            <div style=" max-height: 30vh; overflow-y: auto;">
+                <table class="table table-dark table-hover table-bordered table-sm">
+                    <tbody>
+                    {% for booking in booking_history %}
+                    <tr class="item" style="text-align: center !important; line-height: 24px;">
+                        <td style="width: 120px;">{{ booking.table.number }}</td>
+                        <td style="width: 120px;">{{ booking.table.seats }}</td>
+                        <td style="width: 120px;">{{ booking.date_reserved }}</td>
+                        <td style="width: 120px;">{{ booking.time_reserved }}</td>
+                        <td style="width: 120px;">{{ booking.cancelled_at }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+</section><!-- /Book A Table Section -->
+
+{% endblock %}

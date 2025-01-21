@@ -1,0 +1,72 @@
+{% extends 'restaurant/base.html' %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+
+<!-- Page Title -->
+<div class="page-title position-relative" data-aos="fade"
+     style="background-image: url({% static 'img/page-title-bg.jpeg' %});">
+    <div class="container position-relative">
+        <h1>Выбор стола<br></h1>
+        <h5>Обратите внимание!<br></h5>
+        <h6>Бронирование столов доступно до 20:00<br></h6>
+        <hr>
+        <div class="d-flex justify-content-center">
+            <form method="post" class="mb-5" style="max-width: 500px;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-group mb-3">
+                    {{ form.booking_date.label_tag }}
+                    {{ form.booking_date }}
+                </div>
+                <button type="submit" class="btn btn-warning">Показать столы</button>
+            </form>
+        </div>
+        <!-- Таблица состояния столов -->
+        {% if selected_date %}
+        <h3 class="mt-5">Список столов на {{ selected_date|translate_date }}</h3>
+        <hr>
+        <table class="table table-dark table-striped table-hover align-middle">
+            <thead>
+            <tr>
+                <th scope="col">Стол №</th>
+                <th scope="col">Кол-во мест</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Бронь</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for table, is_available in table_statuses %}
+            <tr>
+                <th scope="row">{{ table.number }}</th>
+                <td>{{ table.seats }}</td>
+                <td>
+                    {% if is_available %}
+                    <span class="badge bg-success">Свободен</span>
+                    {% else %}
+                    <span class="badge bg-danger">Занят</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if is_available %}
+                    <a class="btn btn-light"
+                       href="{% url 'restaurant:booking_create' table_id=table.pk date_reserved=selected_date time_reserved=selected_time %}"
+                       role="button" style="width: 140px">
+                        Забронировать
+                    </a>
+                    {% else %}
+                    <a href="#" class="btn btn-secondary disabled" tabindex="-1" role="button" aria-disabled="true"
+                       style="width: 140px">
+                        Недоступен
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div><!-- End Page Title -->
+
+{% endblock %}

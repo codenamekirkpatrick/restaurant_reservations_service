@@ -1,0 +1,24 @@
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+
+<div class="d-flex flex-column justify-content-center align-items-center"
+     style="min-height: 110vh; padding: 40px 0;">
+    <div class="row justify-content-center">
+        <div class="col-9">
+            <div class="card-header"></div>
+            <div class="card-body">
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-outline-warning my-2 mx-auto col-md-12">Сохранить</button>
+                        <a href="{% url 'users:profile' user.pk %}"
+                           class="btn btn-outline-warning my-2 mx-auto col-md-12">Назад</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
