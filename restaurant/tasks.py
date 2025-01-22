@@ -7,7 +7,7 @@ from restaurant.models import Booking
 @shared_task
 def cancel_expired_bookings():
     """
-    Отменяет бронирования столов, срок действия которых истек.
+    Отменяет бронирование столов, если истек срок бронирования.
     """
     now = timezone.now()
     active_bookings = Booking.objects.filter(is_active=True)
@@ -30,5 +30,5 @@ def cancel_expired_bookings():
         if now >= expiration_time:
             booking.cancel()
             print(
-                f"Бронирование для стола {booking.table.number} было отменено, так как истекло время"
+                f"Бронирование для стола {booking.table.number} было отменено в связи с итсечением времени бронирования"
             )

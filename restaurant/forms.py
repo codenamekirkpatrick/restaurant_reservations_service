@@ -3,6 +3,7 @@ from django.utils import timezone
 from datetime import timedelta, datetime
 from .models import Booking
 
+
 class StyleFormMixin:
     """
     Добавляет стилевые атрибуты к полям формы - стилизация формы.

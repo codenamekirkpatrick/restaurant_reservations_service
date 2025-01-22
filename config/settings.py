@@ -15,7 +15,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = True
 
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
@@ -27,8 +27,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",  # подключение статических файлов к проекту
     "restaurant.apps.RestaurantConfig",
     "users.apps.UsersConfig",
-    "phonenumber_field",
     "django_countries",
+    "django_celery_beat",
     "corsheaders",
 ]
 
@@ -95,7 +95,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = "ru"
+LANGUAGE_CODE = "en"
 
 
 TIME_ZONE = "Europe/Moscow"
@@ -150,25 +150,32 @@ EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", False) == "True"
 
 # Celery
 # URL-адрес брокера сообщений
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_BROKER_URL = os.getenv(
+    "CELERY_BROKER_URL"
+)  # Например, Redis, который по умолчанию работает на порту 6379
+
 # URL-адрес брокера результатов, также Redis
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+
 # Часовой пояс для работы Celery
 CELERY_TIMEZONE = os.getenv("CELERY_TIMEZONE")
+
 # Флаг отслеживания выполнения задач
 CELERY_TASK_TRACK_STARTED = os.getenv("CELERY_TASK_TRACK_STARTED")
+
 # Максимальное время на выполнение задачи
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = os.getenv(
     "CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP"
 )
-
 CELERY_BEAT_SCHEDULE = {
     "cancel-expired-bookings-every-5-minutes": {
         "task": "restaurant.tasks.cancel_expired_bookings",
         "schedule": 300,  # каждые 5 минут = 300 секунд
     },
 }
+
 
 # Настройки срока действия токенов
 SIMPLE_JWT = {
