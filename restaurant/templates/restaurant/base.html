@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'css/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/swiper-bundle.min.css' %}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+
+</head>
+
+<body class="starter-page-page">
+
+<header id="header" class="header fixed-top">
+
+    <div class="topbar d-flex align-items-center">
+        <div class="container d-flex justify-content-center justify-content-md-between">
+            <div class="contact-info d-flex align-items-center">
+                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">lermontov@mail.com</a></i>
+                <i class="bi bi-phone d-flex align-items-center ms-4"><span>+7 495 555 42 11</span></i>
+            </div>
+        </div>
+    </div><!-- End Top Bar -->
+
+    <div class="branding d-flex align-items-center">
+
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+            <a href="{% url 'restaurant:index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
+
+                <h1 class="sitename">Ресторан Лермонтов</h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="{% url 'restaurant:index' %}">Главная<br></a></li>
+                    <li><a href="{% url 'restaurant:menu' %}">Меню</a></li>
+                    <li><a href="{% url 'restaurant:about' %}">О нас</a></li>
+                    <li><a href="{% url 'restaurant:contacts' %}">Контакты</a></li>
+                    <li><a href="{% url 'restaurant:booking_list' %}">
+                        {% if user.is_authenticated %}
+                        Бронирования
+                        {% endif %}
+                    </a></li>
+                    <li>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'users:profile' user.pk %}" style="color: gold">Личный кабинет</a>
+                        {% endif %}
+                    </li>
+                    <li>
+                        {% if not user.is_authenticated %}
+                        <a style="color: gold; padding: 18px 15px; " href="{% url 'users:register' %}">Регистрация</a>
+                        {% endif %}
+                    </li>
+                    <li>
+                        {% if not user.is_authenticated %}
+                        <a style="color: gold; padding: 18px 15px; " href="{% url 'users:login' %}">Вход</a>
+                        {% else %}
+                        <form action="{% url 'users:logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    style="padding: 18px 15px; background: transparent; border: none; color: gold; font-size: 14px; text-decoration: none;">
+                                Выход
+                            </button>
+                        </form>
+                        {% endif %}
+                    </li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+
+            </nav>
+            <a class="btn-book-a-table d-none d-xl-block" style="" href="{% url 'restaurant:table_list' %}">Забронировать
+                стол</a>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main class="main">
+    <div class="container w-100 mb-4 mt-5">
+        {% block content %}
+        <!-- Add content here -->
+        {% endblock %}
+    </div>
+</main>
+
+<footer id="footer" class="footer">
+
+    <div class="container footer-top">
+        <div class="row gy-4">
+            <div class="col-lg-4 col-md-6 footer-about">
+                <a href="index.html" class="logo d-flex align-items-center">
+                    <span class="sitename">Ресторан Лермонтов</span>
+                </a>
+                <div class="footer-contact pt-3">
+                    <p>Котельническая наб., д. 1</p>
+                    <p>г. Москва</p>
+                    <p class="mt-3"><strong>Телефон:</strong> <span>+7 495 555 42 11</span></p>
+                    <p><strong>Email:</strong> <span>lermontov@mail.com</span></p>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-3 footer-links">
+                <h4>Полезные ссылки</h4>
+                <ul>
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#">О нас</a></li>
+                    <li><a href="#">Доставка</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-3 footer-links">
+                <h4>Наши услуги</h4>
+                <ul>
+                    <li><a href="#">Доставка</a></li>
+                    <li><a href="#">Праздники и мероприятия</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-md-12 footer-newsletter">
+                <h4>Наши новости</h4>
+                <p>Подпишитесь на нашу рассылку, чтобы получать сообщения о новинках и акциях</p>
+                <form action="forms/newsletter.php" method="post" class="php-email-form">
+                    <div class="newsletter-form"><input type="email" name="email"><input type="submit"
+                                                                                         value="Подписаться"></div>
+                    <div class="loading"></div>
+                    <div class="error-message"></div>
+                    <div class="sent-message"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+
+<!-- Vendor JS Files -->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/validate.js' %}"></script>
+<script src="{% static 'js/aos.js' %}"></script>
+<script src="{% static 'js/glightbox.min.js' %}"></script>
+<script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+
+<!-- Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>
