@@ -106,24 +106,6 @@ SECRET_KEY=<секретный_ключ>
    celery -A config flower --port=5555
 ```
 
-### PEP8
-
-**Для формирования отчета при помощи flake8-html выполните команду:**
-
-```bash
-  flake8 --format=html --ignore=migrations/,venv/,E501 --htmldir=flake8_report ./
-```
-
-**--format=html** - параметр, указывающий на тип формата отчета
-
-**--ignore=migrations/,venv,E501** - параметр принимает: игнорируемые директории, файлы, коды ошибок
-
-**--htmldir=flake8_report ./** - параметр для создания директории с отчетом
-
-**./** - это корневая директория проекта для создания папки flake8_report
-
-**index.html** - файл с отчетом
-
 ### Развертывание с помощью Docker и Docker Compose
 
 Этот проект можно легко развернуть с помощью Docker и Docker Compose. Для этого необходимо установить Docker и Docker
